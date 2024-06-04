@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.utils.loadPropertyFromResources
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -19,6 +22,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+        defaultConfig {
+            buildConfigField(
+                "String", "API_KEY", "\"${project.findProperty("API_KEY")}\""
+            )
+        }
+        buildFeatures{
+            buildConfig = true
         }
     }
 
