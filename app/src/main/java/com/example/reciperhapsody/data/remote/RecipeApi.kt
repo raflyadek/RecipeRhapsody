@@ -1,7 +1,7 @@
 package com.example.reciperhapsody.data.remote
 
 import com.example.reciperhapsody.data.remote.response.ResultsItem
-import com.example.reciperhapsody.data.remote.response.SearchResponse
+import com.example.reciperhapsody.data.remote.response.RecipeList
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -10,10 +10,10 @@ interface RecipeApi {
 
     //Get recipe list
     @GET("recipes/complexSearch")
-    suspend fun getRecipe(
+    suspend fun getRecipeList(
       @Query("limit") limit: Int,
       @Query("offset") offset: Int
-    ): SearchResponse
+    ): RecipeList
 
     //Get recipe info by id using path
     @GET("recipes/{id}/information")

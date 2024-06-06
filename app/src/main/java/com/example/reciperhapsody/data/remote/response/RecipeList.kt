@@ -2,7 +2,7 @@ package com.example.reciperhapsody.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class SearchResponse(
+data class RecipeList(
 
 	@field:SerializedName("number")
 	val number: Int,
