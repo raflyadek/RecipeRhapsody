@@ -2,7 +2,7 @@ package com.example.reciperhapsody.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class ResultsItem(
+data class RecipeInfo(
 
 	@field:SerializedName("image")
 	val image: String,

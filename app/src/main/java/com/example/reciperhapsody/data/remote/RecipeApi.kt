@@ -1,6 +1,6 @@
 package com.example.reciperhapsody.data.remote
 
-import com.example.reciperhapsody.data.remote.response.ResultsItem
+import com.example.reciperhapsody.data.remote.response.RecipeInfo
 import com.example.reciperhapsody.data.remote.response.RecipeList
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -19,5 +19,5 @@ interface RecipeApi {
     @GET("recipes/{id}/information")
     suspend fun getRecipeInfo(
         @Path("id") id: Int
-    ): ResultsItem
+    ): RecipeInfo
 }

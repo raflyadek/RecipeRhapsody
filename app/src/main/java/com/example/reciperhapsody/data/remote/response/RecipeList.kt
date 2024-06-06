@@ -14,5 +14,5 @@ data class RecipeList(
 	val offset: Int,
 
 	@field:SerializedName("results")
-	val results: List<ResultsItem>
+	val results: List<RecipeInfo>
 )
