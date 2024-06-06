@@ -1,5 +1,6 @@
 package com.example.reciperhapsody.di
 
+import com.example.reciperhapsody.BuildConfig
 import com.example.reciperhapsody.data.remote.RecipeApi
 import com.example.reciperhapsody.repository.RecipeRepository
 import com.example.reciperhapsody.util.Constants.BASE_URL
@@ -28,19 +29,22 @@ object AppModule {
     @Provides
     fun provideRecipeApi(): RecipeApi {
         val client = OkHttpClient.Builder()
-            .addInterceptor { chain -> return@addInterceptor addApiKey(chain) }
+            .addInterceptor { apiKeyAsHeader(it) }
+            .build()
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
+            .client(client)
             .build()
             .create(RecipeApi::class.java)
     }
-    private fun addApiKey(chain: Interceptor.Chain): Response {
-        val request = chain.request().newBuilder()
-        val originalHttpUrl = chain.request().url
-        val newUrl = originalHttpUrl.newBuilder()
-            .addQueryParameter("apiKey", "my_api_key").build()
-        request.url(newUrl)
-        return chain.proceed(request.build())
-    }
+
+    @Singleton
+    @Provides
+    private fun apiKeyAsHeader(it: Interceptor.Chain) = it.proceed(
+        it.request()
+            .newBuilder()
+            .addHeader("x-api-key", BuildConfig.API_KEY)
+            .build()
+    )
 }
