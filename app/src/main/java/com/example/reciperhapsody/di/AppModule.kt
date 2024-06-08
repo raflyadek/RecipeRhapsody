@@ -39,8 +39,6 @@ object AppModule {
             .create(RecipeApi::class.java)
     }
 
-    @Singleton
-    @Provides
     private fun apiKeyAsHeader(it: Interceptor.Chain) = it.proceed(
         it.request()
             .newBuilder()
