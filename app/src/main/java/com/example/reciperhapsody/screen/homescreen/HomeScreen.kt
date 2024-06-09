@@ -3,17 +3,22 @@ package com.example.reciperhapsody.screen.homescreen
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text2.BasicTextField2
 import androidx.compose.foundation.text2.input.TextFieldLineLimits
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -21,6 +26,8 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -42,33 +50,40 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.reciperhapsody.R
+import com.example.reciperhapsody.data.model.BottomBarItem
 
 @Composable
 fun RecipeHomeScreen(
     navController: NavController,
 ) {
-    Surface(
-        color = MaterialTheme.colorScheme.background,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column {
-            Spacer(modifier = Modifier.height(25.dp))
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
-                contentDescription = "Tagline text MAU MASAK APA HARI INI?",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally)
-            )
+    Scaffold(
+        bottomBar = { BottomBar() }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(innerPadding)
+        ){
+            Banner()
             SearchBar(
+                hint = "Mau masak apa?",
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                hint = "Mau masak apa?"
+                    .padding(20.dp)
             )
-            BottomBar()
         }
     }
+}
+
+@Composable
+fun Banner(modifier: Modifier = Modifier) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_launcher_background),
+        contentDescription = "banner tagline",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .height(140.dp)
+            .fillMaxWidth()
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -113,37 +128,40 @@ fun SearchBar(
 }
 
 @Composable
-fun BottomBar() {
-    Scaffold(
-        bottomBar = {
-            BottomAppBar(
-                actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Filled.Favorite,
-                            contentDescription = "Favorite Screen")
-                    }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            Icons.Filled.Home,
-                            contentDescription = "Home Screen"
-                        )
-                    }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            Icons.Filled.Person,
-                            contentDescription = "Profile Screen",
-
-                        )
-                    }
+fun BottomBar(modifier: Modifier = Modifier) {
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.background,
+        modifier = Modifier
+    ) {
+        val navigationItems = listOf(
+            BottomBarItem(
+                tittle = "Home",
+                icon = Icons.Default.Home
+            ),
+            BottomBarItem(
+                tittle = "Favorite",
+                icon = Icons.Default.Favorite
+            ),
+            BottomBarItem(
+                tittle = "Profile",
+                icon = Icons.Default.AccountCircle
+            )
+        )
+        navigationItems.map {
+            NavigationBarItem(
+                selected = it.tittle == navigationItems[0].tittle,
+                onClick = { /*TODO*/ },
+                icon = { 
+                    Icon(
+                        imageVector = it.icon,
+                        contentDescription = it.tittle
+                    )
+                },
+                label = {
+                    Text(text = it.tittle)
                 }
             )
         }
-    ) { innerPadding ->
-        Text(
-            modifier = Modifier.padding(innerPadding),
-            text = "Recipe List"
-        )
     }
 }
 
