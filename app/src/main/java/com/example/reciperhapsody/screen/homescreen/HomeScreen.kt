@@ -255,6 +255,14 @@ fun RecipeRow(
 }
 
 @Composable
+fun RecipeList(
+    navController: NavController,
+    viewModel: HomeScreenViewModel = hiltViewModel()
+) {
+    val
+}
+
+@Composable
 @Preview
 fun HomeScreenPreview() {
     RecipeHomeScreen(navController = rememberNavController())
