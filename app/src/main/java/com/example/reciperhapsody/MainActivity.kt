@@ -44,6 +44,9 @@ class MainActivity : ComponentActivity() {
                     composable("favorite_screen") {
 
                     }
+                    composable("randomize_screen") {
+
+                    }
                 }
             }
         }

@@ -4,13 +4,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,20 +21,17 @@ import androidx.compose.foundation.text2.BasicTextField2
 import androidx.compose.foundation.text2.input.TextFieldLineLimits
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -57,7 +52,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.SubcomposeAsyncImage
@@ -65,14 +59,14 @@ import coil.request.ImageRequest
 import com.example.reciperhapsody.R
 import com.example.reciperhapsody.data.RecipeListEntry
 import com.example.reciperhapsody.data.model.BottomBarItem
-import com.example.reciperhapsody.data.remote.response.RecipeList
 
 @Composable
 fun RecipeHomeScreen(
     navController: NavController,
 ) {
     Scaffold(
-        bottomBar = { BottomBar() }
+        bottomBar = { BottomBar() },
+        floatingActionButton = { FloatingActionButton()}
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -143,6 +137,17 @@ fun SearchBar(
 }
 
 @Composable
+fun FloatingActionButton(modifier: Modifier = Modifier) {
+    FloatingActionButton(
+        onClick = { /*TODO*/ },
+        containerColor = Color.Black,
+        contentColor = Color.White,
+    ) {
+        Icon(Icons.Default.Add,"Create Recipe")
+    }
+}
+
+@Composable
 fun BottomBar(modifier: Modifier = Modifier) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.background,
@@ -157,10 +162,10 @@ fun BottomBar(modifier: Modifier = Modifier) {
                 tittle = "Favorite",
                 icon = Icons.Default.Favorite
             ),
-            BottomBarItem(
-                tittle = "Profile",
-                icon = Icons.Default.AccountCircle
-            )
+//            BottomBarItem(
+//                tittle = "Randomize",
+//                icon = Icons.Default.
+//            )
         )
         navigationItems.map {
             NavigationBarItem(
@@ -255,13 +260,13 @@ fun RecipeRow(
     }
 }
 
-@Composable
-fun RecipeList(
-    navController: NavController,
-    viewModel: HomeScreenViewModel = hiltViewModel()
-) {
-    val
-}
+//@Composable
+//fun RecipeList(
+//    navController: NavController,
+//    viewModel: HomeScreenViewModel = hiltViewModel()
+//) {
+//    val
+//}
 
 //if any error occur we can click the retry button
 @Composable
