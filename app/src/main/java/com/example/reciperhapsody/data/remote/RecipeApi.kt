@@ -17,7 +17,7 @@ interface RecipeApi {
 
     //Get recipe info by id using path
     @GET("recipes/{id}/information")
-    suspend fun getRecipeInfo(
+    suspend fun getRecipeInfoById(
         @Path("id") id: Int
     ): RecipeInfo
 }

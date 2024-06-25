@@ -21,7 +21,6 @@ import androidx.compose.foundation.text2.BasicTextField2
 import androidx.compose.foundation.text2.input.TextFieldLineLimits
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
@@ -43,10 +42,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,8 +58,8 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.example.reciperhapsody.R
+import com.example.reciperhapsody.components.BottomBarItem
 import com.example.reciperhapsody.data.RecipeListEntry
-import com.example.reciperhapsody.data.model.BottomBarItem
 
 @Composable
 fun RecipeHomeScreen(
@@ -66,7 +67,7 @@ fun RecipeHomeScreen(
 ) {
     Scaffold(
         bottomBar = { BottomBar() },
-        floatingActionButton = { FloatingActionButton()}
+        floatingActionButton = { FloatingActionButton() }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -138,17 +139,19 @@ fun SearchBar(
 
 @Composable
 fun FloatingActionButton(modifier: Modifier = Modifier) {
+    val questionImageVector = ImageVector.vectorResource(id = R.drawable.baseline_question_mark_24)
     FloatingActionButton(
         onClick = { /*TODO*/ },
-        containerColor = Color.Black,
-        contentColor = Color.White,
+        containerColor = Color.White,
+        contentColor = Color.Black,
     ) {
-        Icon(Icons.Default.Add,"Create Recipe")
+        Icon(questionImageVector,"Create Recipe")
     }
 }
 
 @Composable
 fun BottomBar(modifier: Modifier = Modifier) {
+    val addBoxImageVector = ImageVector.vectorResource(id = R.drawable.baseline_add_box_24)
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.background,
         modifier = Modifier
@@ -159,13 +162,13 @@ fun BottomBar(modifier: Modifier = Modifier) {
                 icon = Icons.Default.Home
             ),
             BottomBarItem(
+                tittle = "Add",
+                icon = addBoxImageVector,
+                ),
+            BottomBarItem(
                 tittle = "Favorite",
                 icon = Icons.Default.Favorite
-            ),
-//            BottomBarItem(
-//                tittle = "Randomize",
-//                icon = Icons.Default.
-//            )
+            )
         )
         navigationItems.map {
             NavigationBarItem(

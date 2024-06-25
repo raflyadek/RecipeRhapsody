@@ -13,6 +13,6 @@ class DetailScreenViewModel @Inject constructor(
 ) : ViewModel() {
 
     suspend fun getRecipeInfo(recipeId: Int): Resource<RecipeInfo> {
-        return repository.getRecipeInfo(recipeId)
+        return repository.getRecipeInfoById(recipeId)
     }
 }

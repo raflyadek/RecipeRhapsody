@@ -1,8 +1,8 @@
 package com.example.reciperhapsody.repository
 
 import com.example.reciperhapsody.data.remote.RecipeApi
-import com.example.reciperhapsody.data.remote.response.RecipeList
 import com.example.reciperhapsody.data.remote.response.RecipeInfo
+import com.example.reciperhapsody.data.remote.response.RecipeList
 import com.example.reciperhapsody.util.Resource
 import javax.inject.Inject
 
@@ -18,9 +18,9 @@ class RecipeRepository @Inject constructor(
         return Resource.Success(response)
     }
 
-    suspend fun getRecipeInfo(recipeId: Int): Resource<RecipeInfo> {
+    suspend fun getRecipeInfoById(recipeId: Int): Resource<RecipeInfo> {
         val response = try {
-            api.getRecipeInfo(recipeId)
+            api.getRecipeInfoById(recipeId)
         } catch (e: Exception) {
             return Resource.Error("Unknown error.")
         }
