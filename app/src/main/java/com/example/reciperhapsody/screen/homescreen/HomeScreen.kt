@@ -17,12 +17,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text2.BasicTextField2
 import androidx.compose.foundation.text2.input.TextFieldLineLimits
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -68,6 +66,7 @@ import com.example.reciperhapsody.data.RecipeListEntry
 @Composable
 fun RecipeHomeScreen(
     navController: NavController,
+    viewModel: HomeScreenViewModel = hiltViewModel()
 ) {
     Scaffold(
         bottomBar = { BottomBar() },
@@ -75,7 +74,6 @@ fun RecipeHomeScreen(
     ) { innerPadding ->
         Column(
             modifier = Modifier
-                .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
         ){
             Banner()
@@ -83,8 +81,10 @@ fun RecipeHomeScreen(
                 hint = "Mau masak apa?",
                 modifier = Modifier
                     .padding(20.dp)
-            )
-
+            ) {
+                viewModel.searchRecipeList(it)
+            }
+            RecipeList(navController = navController)
         }
     }
 }
