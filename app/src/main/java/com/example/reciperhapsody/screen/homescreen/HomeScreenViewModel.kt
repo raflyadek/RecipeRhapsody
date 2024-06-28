@@ -3,7 +3,6 @@ package com.example.reciperhapsody.screen.homescreen
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.reciperhapsody.data.RecipeListEntry
 import com.example.reciperhapsody.repository.RecipeRepository
 import com.example.reciperhapsody.util.Constants.PAGE_SIZE
@@ -26,6 +25,10 @@ class HomeScreenViewModel @Inject constructor(
     var isLoading = mutableStateOf(false)
     var loadError = mutableStateOf("")
     var endReached = mutableStateOf(false)
+
+    init {
+        loadRecipePaginated()
+    }
 
     fun searchRecipeList(query: String) {
         val listToSearch = if (isSearchingStarted) {
@@ -53,18 +56,25 @@ class HomeScreenViewModel @Inject constructor(
         }
     }
 
-//    fun loadRecipePaginated() {
-//        viewModelScope.launch {
-//            isLoading.value = true
-//            val result = repository.getRecipeList(PAGE_SIZE, curPage * PAGE_SIZE)
-//            when(result) {
-//                is Resource.Success -> {
-////                    endReached.value = curPage * PAGE_SIZE >= result.data!!.totalResults
-////                    val recipeEntries = result.data.results.mapIndexed { index, entry ->
-////                        val number = if(entry.url)
-////                    }
-//                }
-//            }
-//        }
-//    }
+    fun loadRecipePaginated() {
+        viewModelScope.launch {
+            isLoading.value = true
+            val result = repository.getRecipeList(PAGE_SIZE, curPage * PAGE_SIZE)
+            when(result) {
+                is Resource.Success -> {
+                    endReached.value = curPage * PAGE_SIZE >= result.data!!.totalResults
+                    curPage++
+                    loadError.value = ""
+                    isLoading.value = false
+                }
+                is Resource.Error -> {
+                    loadError.value = result.message!!
+                    isLoading.value = false
+                }
+                is Resource.Loading -> {
+                    isLoading.value = true
+                }
+            }
+        }
+    }
 }

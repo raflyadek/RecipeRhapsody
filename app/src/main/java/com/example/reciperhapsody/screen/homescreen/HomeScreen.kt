@@ -6,14 +6,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -53,6 +56,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.SubcomposeAsyncImage
@@ -80,6 +84,7 @@ fun RecipeHomeScreen(
                 modifier = Modifier
                     .padding(20.dp)
             )
+
         }
     }
 }
@@ -263,13 +268,45 @@ fun RecipeRow(
     }
 }
 
-//@Composable
-//fun RecipeList(
-//    navController: NavController,
-//    viewModel: HomeScreenViewModel = hiltViewModel()
-//) {
-//    val
-//}
+@Composable
+fun RecipeList(
+    navController: NavController,
+    viewModel: HomeScreenViewModel = hiltViewModel()
+) {
+    val recipeList by remember { viewModel.recipeList }
+    val endReached by remember { viewModel.endReached }
+    val loadError by remember { viewModel.loadError }
+    val isLoading by remember { viewModel.isLoading }
+    val isSearching by remember { viewModel.isSearching }
+
+    LazyColumn(contentPadding = PaddingValues(16.dp)) {
+        val itemCount = if(recipeList.size % 2 == 0) {
+            recipeList.size / 2
+        } else {
+            recipeList.size / 2 + 1
+        }
+        items(itemCount) {
+            if(it >= itemCount -1 && !endReached && !isLoading && !isSearching) {
+                viewModel.loadRecipePaginated()
+            }
+            RecipeRow(rowIndex = it, entries = recipeList, navController = navController)
+        }
+    }
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        if(isLoading) {
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+        }
+        if(loadError.isNotEmpty()) {
+            RetryLoad(error = loadError) {
+                viewModel.loadRecipePaginated()
+            }
+        }
+    }
+}
+
 
 //if any error occur we can click the retry button
 @Composable
